@@ -1,0 +1,16 @@
+{
+    "name": "stwessl/form",
+    "description": "Wrapper class for handling html forms",
+    "keywords": [ "form"],
+    "authors": [
+        {
+            "name": "Stephan Wessels",
+			"email": "stwessl@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-0": {
+            "Form\\": ""
+        }
+    }
+}
