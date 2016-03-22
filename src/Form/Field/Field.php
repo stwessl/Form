@@ -64,4 +64,31 @@ abstract class Field {
 		}
 		var_dump($data); exit;
 	}
+	
+	/**
+	 * Find the parent element with tag;
+	 * 
+	 * @param type $tag
+	 * 
+	 * @return \Wa72\HtmlPageDom\HtmlPageCrawler The Parent Node
+	 */
+	protected function parent_tag($tag, $node = false) {
+		
+		if($node === false) {
+			$node = $this->node;
+		}
+		
+		$parent = $node->parents();
+		
+		if($parent->nodeName() == '_root' ) {
+			return false;
+		}
+		if( $parent->nodeName() == $tag ) {
+			return $parent;
+		} else {
+			return $this->parent_tag($tag, $parent);
+		}
+		
+	}
+	
 }

@@ -1,8 +1,8 @@
 <?php
 namespace Form\Field;
 
-class Text extends Field  {
-	var $value = null, $name;
+class Text extends Input  {
+	var $value = null;
 	
 	public function process_post() {
 		//Determine this inputs name
@@ -15,16 +15,6 @@ class Text extends Field  {
 		}
 	}
 
-	public function secure_input($key) {
-		$this->name = $this->node->attr('name');
-		$this->node->attr('name',$key . '-' . $this->node->attr('name'));
-	}
-
-	
-	public function name() {
-		return $this->name;
-	}
-	
 	public function validate() {
 //		echo var_dump( $this->node->attr('required') !== false && $this->value() );
 		if($this->node->attr('required') !== false && !$this->value() || $this->valid === false ) {
@@ -42,12 +32,11 @@ class Text extends Field  {
 
 
 	public function value($value = false) {
-		
 		if($value !== false) {
 			$this->value = $value;
 			$this->node->attr('value', $this->value);
+//				echo $this->node->attr('value');exit;
 		}
-		
 		
 		if($this->value) {
 			return $this->value;

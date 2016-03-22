@@ -80,6 +80,10 @@ class Form {
 		
 		return $data;
 	}
+	
+	public function set_data($data) {
+		return $this->data($data);
+	}
 
 	public function parse() {
 		return $this->c->saveHTML();
