@@ -13,6 +13,10 @@
             "Form": "src/"
         }
     },
+	"require": {
+		"wa72/htmlpagedom":"~1.0"
+	},
+	
 	"extra": {
         "branch-alias": {
             "dev-master": "1.0.x-dev"
