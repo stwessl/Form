@@ -8,7 +8,7 @@ class Form {
 
 	private $string, $c, $fields, $s_key;
 	private $types = [
-		'text', 'select', 'multifield' , 'file'
+		'text', 'select', 'multifield' , 'file', 'number'
 	];
 
 	public function __construct(string $form, $s_key = false) {
