@@ -18,14 +18,18 @@ class Text extends Input  {
 	public function validate() {
 //		echo var_dump( $this->node->attr('required') !== false && $this->value() );
 		if($this->node->attr('required') !== false && !$this->value() || $this->valid === false ) {
-			$this->errors[] = "This field is required"; 
 			
-			//Mark the input with this error also
-			$this->node->attr('title', implode(' | ', $this->errors()));
-			
+			$this->invalidate('This field is required');
 			
 			return false;
 		} else return true;
+	}
+	
+	public function invalidate($message) {
+		parent::invalidate($message);
+		
+		$this->node->attr('title', implode(' | ', $this->errors()));
+		
 	}
 	
 	
