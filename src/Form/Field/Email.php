@@ -11,7 +11,9 @@ class Email extends Text {
 		
 		if($result){
 			$result = filter_var($this->value(), FILTER_VALIDATE_EMAIL);
-			$this->invalidate('Value must be a valid email address `youremail@yourdomain.com` ');
+			if(!$result) {
+				$this->invalidate('Value must be a valid email address `youremail@yourdomain.com` ');
+			}
 		}
 		
 		return $result;
