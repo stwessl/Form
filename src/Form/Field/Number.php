@@ -10,10 +10,12 @@ class Number extends Text {
 		$result = parent::validate();
 		
 		if($result) {
-			if(!is_int($this->value())) {
+			if(!is_numeric($this->value())) {
 				$result = false;
 				$this->invalidate('Value is not a number');
 			}
 		}
+		
+		return $result;
 	}
 }
