@@ -17,7 +17,8 @@ class Text extends Input  {
 
 	public function validate() {
 //		echo var_dump( $this->node->attr('required') !== false && $this->value() );
-		if($this->node->attr('required') !== false && !$this->value() ) {
+		debug('Required Check');
+		if($this->node->attr('required') !== NULL && !$this->value() ) {
 			
 			$this->invalidate('This field is required');
 			
