@@ -24,7 +24,7 @@ class Form {
 	public function validate() {
 		$valid = true;
 		foreach($this->fields as &$field) {
-			if($valid & !$field->validate()) {
+			if($valid & !$field->validate() || $field->errors() != []) {
 				$valid = false;
 			}
 		}
