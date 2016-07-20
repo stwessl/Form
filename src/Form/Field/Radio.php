@@ -37,7 +37,23 @@ class Radio extends Select {
 			});
 		}
 
-		return $this->value ? $this->value : $this->node->first()->attr('value');
+		return $this->value ? $this->value : false;
+	}
+
+	public function validate() {
+		$_required = false;
+		$this->node->each(function($node) use(&$_required) {
+			if($this->node->attr('required') !== NULL) {
+				$_required = true;
+			}
+		});
+		
+		if($_required && $this->value() === false) {
+			$this->invalidate('Please select an option');
+			return false;
+		}
+		
+		return true;
 	}
 
 }
