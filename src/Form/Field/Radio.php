@@ -1,0 +1,43 @@
+<?php
+
+namespace Form\Field;
+
+class Radio extends Select {
+
+	public static function get_selector() {
+		return 'input[type=radio]';
+	}
+
+	public function process_post() {
+		//Determine this inputs name
+		$name = $this->node->attr('name');
+
+
+		if (!empty($_POST) && isset($_POST[$name])) {
+			$this->value = $_POST[$name];
+
+			$this->node->each(function($node) {
+				if ($node->attr('value') == $this->value()) {
+					$node->attr('checked', 'checked');
+				}
+			});
+		}
+	}
+
+	public function value($value = false) {
+		if ($value !== false) {
+			$this->value = $value;
+
+			$this->node->each(function($node) {
+				if ($node->attr('value') == $value) {
+					$node->attr('checked', 'checked');
+				} else {
+					$node->removeAttribute('checked');
+				}
+			});
+		}
+
+		return $this->value ? $this->value : $this->node->first()->attr('value');
+	}
+
+}
