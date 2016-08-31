@@ -91,4 +91,29 @@ abstract class Field {
 		
 	}
 	
+	
+	public function get_post_value($name = false) {
+		if(!$name)  {
+			$name = $this->name;
+		}
+		
+		$parts = explode('[', $name);
+
+		if (isset($_POST)) {
+
+
+			$values = $_POST;
+			foreach ($parts as $part) {
+				$part = rtrim($part, ']');
+				if (isset($values[$part])) {
+					$values = $values[$part];
+				} else {
+					return false;
+				}
+			}
+		}
+
+		return $values;
+	}
+	
 }

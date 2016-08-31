@@ -8,7 +8,7 @@ class Checkbox extends Input {
 		//Determine this inputs name
 		$name = $this->node->attr('name');
 		
-		if(isset($_POST[$name])) {
+		if( $this->get_post_value($name) ) {
 			$this->value(true);
 		} else {
 			$this->value(false);

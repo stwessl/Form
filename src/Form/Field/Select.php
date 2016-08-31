@@ -14,8 +14,8 @@ class Select extends Field {
 		$name = $this->node->attr('name');
 		
 		
-		if(!empty($_POST) && isset($_POST[$name])) {
-			$this->value = $_POST[$name];
+		if(!empty($_POST) &&  $this->get_post_value($name)) {
+			$this->value =  $this->get_post_value($name);
 			$this->node->filter('option[value="' . $this->value . '"]')->attr('selected','selected');
 		}
 	}
