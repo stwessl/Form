@@ -2,7 +2,7 @@
 namespace Form\Field;
 
 
-class Password extends Form\Field\Text {
+class Password extends Text {
 	
 	public static function get_selector() {
 		return 'input[type="password"]';
