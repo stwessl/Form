@@ -11,7 +11,7 @@ class Form {
 		'text', 'select', 'multifield', 'file', 'number', 'email', 'textarea', 'radio', 'checkbox', 'password'
 	];
 
-	public function __construct(string $form, $s_key = false) {
+	public function __construct( $form, $s_key = false) {
 		$this->string = $form;
 		$this->s_key = $s_key;
 		//Load html in html parser
