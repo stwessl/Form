@@ -60,9 +60,9 @@ abstract class Field {
 		while($first_key) {
 			$data = $data[$first_key];
 			$first_key = array_shift($part_filtered);
-			debug($first_key);
+			
 		}
-		var_dump($data); exit;
+		
 	}
 	
 	/**
