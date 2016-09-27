@@ -8,7 +8,7 @@ class Form {
 
 	private $string, $c, $fields, $s_key;
 	private $types = [
-		'text', 'select', 'multifield', 'file', 'number', 'email', 'textarea', 'radio', 'checkbox', 'password'
+		'text', 'select', 'multifield', 'file', 'number', 'email', 'textarea', 'radio', 'checkbox', 'password', 'submit'
 	];
 
 	public function __construct( $form, $s_key = false) {
