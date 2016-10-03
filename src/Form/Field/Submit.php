@@ -8,6 +8,11 @@
 namespace Form\Field;
 
 class Submit extends Text {
+	
+	public function process_post() {
+		
+	}
+	
 	public static function get_selector() {
 		return '*[name][type="submit"]';
 	}
