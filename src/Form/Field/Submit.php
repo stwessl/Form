@@ -24,5 +24,21 @@ class Submit extends Text {
 	public static function get_selector() {
 		return '*[name][type="submit"]';
 	}
+	
+	public function value($value = false) {
 
+
+		if ($value !== false) {
+			$this->value = $value;
+//			$this->node->attr('value', $this->value);
+//				echo $this->node->attr('value');exit;
+		}
+
+		if ($this->value) {
+			return $this->value;
+		} else if ($this->node->attr('value')) {
+			return $this->node->attr('value');
+		} else
+			return false;
+	}
 }
