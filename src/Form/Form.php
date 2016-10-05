@@ -20,6 +20,13 @@ class Form {
 		// Look for all standerd inputs and special input divs
 		$this->assemble_fields();
 	}
+	
+	public function get_fields(){
+		$fields = [];
+		foreach($this->fields as $field) $fields[] = $field->name();
+		$fields = array_unique($fields);
+		return $fields;
+	}
 
 	public function validate() {
 		$valid = true;
