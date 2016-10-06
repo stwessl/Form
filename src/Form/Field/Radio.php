@@ -29,10 +29,8 @@ class Radio extends Select {
 			$this->value = $value;
 
 			$this->node->each(function($node) {
-				if ($node->attr('value') == $value) {
+				if ($node->attr('value') == $this->value()) {
 					$node->attr('checked', 'checked');
-				} else {
-					$node->removeAttribute('checked');
 				}
 			});
 		}
