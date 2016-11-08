@@ -61,7 +61,9 @@ class Form {
 		//Get the key for this form
 		$key = current($this->fields)->key;
 		
-		foreach( array_keys($_POST) as $post_value) {
+		$ALL_FIELDS = array_merge($_POST, $_FILES);
+		
+		foreach( array_keys($ALL_FIELDS) as $post_value) {
 			if(strpos($post_value, $key) !== false ) {
 				return true;
 			}
