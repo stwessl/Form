@@ -9,7 +9,8 @@ abstract class Field {
 	 * 
 	 * @var \Wa72\HtmlPageDom\HtmlPageCrawler
 	 */
-	protected $node , $key, $valid, $errors = [];
+	protected $node ,  $valid, $errors = [];
+	public $key;
 
 	abstract static function get_selector();
 
@@ -26,7 +27,8 @@ abstract class Field {
 		$this->node = $c;
 		
 		if($key === false) {
-			$key = md5( session_id( ) );
+			$form = $c->saveHTML();
+			$key = md5( $form . '--'.session_id( ) );
 		}
 		
 		$this->key = $key;

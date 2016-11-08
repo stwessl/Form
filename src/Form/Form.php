@@ -58,11 +58,16 @@ class Form {
 	}
 
 	public function is_posted() { //@todo implement form id for to see submissions better
-		if (!empty($_POST)) {
-			return true;
-		} else {
-			return false;
+		//Get the key for this form
+		$key = current($this->fields)->key;
+		
+		foreach( array_keys($_POST) as $post_value) {
+			if(strpos($post_value, $key) !== false ) {
+				return true;
+			}
 		}
+		
+		return false;
 	}
 
 	function flatten($array, $prefix = '') {
