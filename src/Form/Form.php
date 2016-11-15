@@ -13,9 +13,16 @@ class Form {
 
 	public function __construct( $form, $s_key = false) {
 		$this->string = $form;
-		$this->s_key = $s_key;
+		
+		
 		//Load html in html parser
 		$this->c = HtmlPageCrawler::create($this->string);
+		
+		if($key) {
+			$this->s_key = $s_key;
+		} else {
+			$this->s_key = md5($this->c->saveHTML());
+		}
 
 		// Look for all standerd inputs and special input divs
 		$this->assemble_fields();
