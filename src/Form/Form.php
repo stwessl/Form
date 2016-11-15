@@ -64,19 +64,27 @@ class Form {
 		}
 	}
 
+//	public function is_posted() { //@todo implement form id for to see submissions better
+//		//Get the key for this form
+//		$key = current($this->fields)->key;
+//		
+//		$ALL_FIELDS = array_merge($_POST, $_FILES);
+//		
+//		foreach( array_keys($ALL_FIELDS) as $post_value) {
+//			if(strpos($post_value, $key) !== false ) {
+//				return true;
+//			}
+//		}
+//		
+//		return false;
+//	}
+	
 	public function is_posted() { //@todo implement form id for to see submissions better
-		//Get the key for this form
-		$key = current($this->fields)->key;
-		
-		$ALL_FIELDS = array_merge($_POST, $_FILES);
-		
-		foreach( array_keys($ALL_FIELDS) as $post_value) {
-			if(strpos($post_value, $key) !== false ) {
-				return true;
-			}
+		if (!empty($_POST)) {
+			return true;
+		} else {
+			return false;
 		}
-		
-		return false;
 	}
 
 	function flatten($array, $prefix = '') {
