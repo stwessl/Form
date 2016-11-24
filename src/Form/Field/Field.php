@@ -12,7 +12,7 @@ abstract class Field {
 	protected $node, $valid, $errors = [];
 	public $key;
 
-	function get_selector() {
+	static function get_selector() {
 		
 	}
 
