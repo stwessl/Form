@@ -49,7 +49,11 @@ class Form {
 	public function errors() {
 		$errors = [];
 		foreach ($this->fields as $field) {
-			$errors[$field->name()] = $field->errors();
+			$error = $field->errors();
+			if(!empty($error)) {
+				$errors[$field->name()] = $field->errors();
+			}
+			
 		}
 
 		return $errors;
