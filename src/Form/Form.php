@@ -18,7 +18,7 @@ class Form {
 		//Load html in html parser
 		$this->c = HtmlPageCrawler::create($this->string);
 		
-		if($key) {
+		if($s_key) {
 			$this->s_key = $s_key;
 		} else {
 			$this->s_key = md5($this->c->saveHTML());
