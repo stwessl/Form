@@ -105,7 +105,7 @@ class Form {
 
 
 		if ($data !== false) { // Setter function
-			$fieldname = $name;
+			
 
 			$fdata = [];
 			foreach ($this->flatten($data) as $key => $value) {
