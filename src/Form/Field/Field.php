@@ -118,5 +118,13 @@ abstract class Field {
 
 		return $values;
 	}
+	
+	function disable($disable = true) {
+		if($disable) {
+			$this->node->attr('disabled', 'disabled');
+		} else {
+			$this->node->removeAttr('disabled');
+		}
+	}
 
 }

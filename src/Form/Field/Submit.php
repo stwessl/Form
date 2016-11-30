@@ -25,6 +25,10 @@ class Submit extends Text {
 		return '*[name][type="submit"]';
 	}
 	
+	public function disable($disable = true) {
+		
+	}
+	
 	public function value($value = false) {
 
 

@@ -225,5 +225,14 @@ class Form {
 		}
 		return true;
 	}
+	
+	function disable($name, $disable = true) {
+		foreach ($this->fields as $field) { /* @var $field Form\Field\Field */
+
+			if ($field->name() == $name) {
+				$field->disable();
+			}
+		}
+	}
 
 }

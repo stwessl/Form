@@ -44,10 +44,22 @@ class Select extends Field {
 	public function value($value = false) {
 		if ($value !== false) {
 			$this->value = $value;
-			$this->node->filter('option[value="' . $value . '"]')->attr('selected', 'selected');
-		}
 
-		return $this->value ? $this->value : $this->node->filter('option:first-child')->attr('value');
+
+			if ($this->node->children()) {
+				$this->node->filter('option[value="' . $value . '"]')->attr('selected', 'selected');
+			} else {
+				$this->node->html('<option value="'.$value.'">'.$value.'</option>');
+			}
+		}
+		
+		//check if there is children in this list
+		if ($this->node->children()) {
+			return $this->value ? $this->value : $this->node->filter('option:first-child')->attr('value');
+		} else {
+			return $this->value ? $this->value : false;
+		}
+		
 	}
 
 	public static function get_selector() {
