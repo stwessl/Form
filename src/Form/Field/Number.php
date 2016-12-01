@@ -10,7 +10,7 @@ class Number extends Text {
 		$result = parent::validate();
 		
 		if($result) {
-			if(!is_numeric($this->value())) {
+			if(!is_numeric($this->value()) && $this->value() != '0' ) {
 				$result = false;
 				$this->invalidate('Value is not a number');
 			}
@@ -18,4 +18,6 @@ class Number extends Text {
 		
 		return $result;
 	}
+	
+	
 }
