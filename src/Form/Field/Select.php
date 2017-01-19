@@ -16,8 +16,8 @@ class Select extends Field {
 
 
 		if (!empty($_POST) && $this->get_post_value($name)) {
-			$this->value = $this->get_post_value($name);
-			$this->node->filter('option[value="' . $this->value . '"]')->attr('selected', 'selected');
+//			$this->value = $this->get_post_value($name);
+			$this->value($this->get_post_value($name));
 		}
 	}
 
@@ -49,17 +49,19 @@ class Select extends Field {
 			if ($this->node->children()) {
 				$this->node->filter('option[value="' . $value . '"]')->attr('selected', 'selected');
 			} else {
-				$this->node->html('<option value="'.$value.'">'.$value.'</option>');
+				$this->node->html('<option value="' . $value . '">' . $value . '</option>');
 			}
+
+			//Also add attr with the selected value
+			$this->node->attr('data-value', $this->value());
 		}
-		
+
 		//check if there is children in this list
 		if ($this->node->children()) {
 			return $this->value ? $this->value : $this->node->filter('option:first-child')->attr('value');
 		} else {
 			return $this->value ? $this->value : false;
 		}
-		
 	}
 
 	public static function get_selector() {
