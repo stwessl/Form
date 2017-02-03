@@ -2,6 +2,8 @@
 
 namespace Form\File;
 
+use Exception;
+
 class Upload {
 
 	var $name = null;
