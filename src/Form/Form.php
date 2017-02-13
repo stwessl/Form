@@ -11,26 +11,71 @@ class Form {
 		'text', 'select', 'multifield', 'file', 'number', 'email', 'textarea', 'radio', 'checkbox', 'password', 'submit'
 	];
 
-	public function __construct( $form, $s_key = false) {
+	public function __construct($form, $s_key = false) {
 		$this->string = $form;
-		
-		
+
+
 		//Load html in html parser
 		$this->c = HtmlPageCrawler::create($this->string);
-		
-		if($s_key) {
+
+		if ($s_key) {
 			$this->s_key = $s_key;
 		} else {
-			$this->s_key = md5($this->c->saveHTML());
+			$form_key = md5($this->c->saveHTML());
+			$session_key = 'form-' . $form_key;
+			if (empty($_POST)) {
+				//Check if start and end time is within specified limit
+				//Create a start and end time
+
+
+				if (isset($_SESSION[$session_key])) {
+					$current = $_SESSION[$session_key];
+					if (time() < $current['start'] || time() > $current['end']) {
+						$start = strtotime('now + 5 seconds');
+						$end = strtotime('now + 1 day');
+						$ob = ['start' => $start, 'end' => $end];
+
+						$_SESSION[$session_key] = $ob;
+					}
+				} else {
+					$start = strtotime('now + 5 seconds');
+					$end = strtotime('now + 1 day');
+					$ob = ['start' => $start, 'end' => $end];
+
+					$_SESSION[$session_key] = $ob;
+				}
+			} else {
+				if (isset($_SESSION[$session_key])) {
+					$current = $_SESSION[$session_key];
+					if (time() < $current['start'] || time() > $current['end']) {
+						$start = strtotime('now + 5 seconds');
+						$end = strtotime('now + 1 day');
+						$ob = ['start' => $start, 'end' => $end];
+
+						$_SESSION[$session_key] = $ob;
+					}
+				} else {
+					$start = strtotime('now + 5 seconds');
+					$end = strtotime('now + 1 day');
+					$ob = ['start' => $start, 'end' => $end];
+
+					$_SESSION[$session_key] = $ob;
+				}
+			}
+
+			$key = md5(serialize($_SESSION[$session_key]).$session_key);
+
+			$this->s_key = $key;
 		}
 
 		// Look for all standerd inputs and special input divs
 		$this->assemble_fields();
 	}
-	
-	public function get_fields(){
+
+	public function get_fields() {
 		$fields = [];
-		foreach($this->fields as $field) $fields[] = $field->name();
+		foreach ($this->fields as $field)
+			$fields[] = $field->name();
 		$fields = array_unique($fields);
 		return $fields;
 	}
@@ -50,10 +95,9 @@ class Form {
 		$errors = [];
 		foreach ($this->fields as $field) {
 			$error = $field->errors();
-			if(!empty($error)) {
+			if (!empty($error)) {
 				$errors[$field->name()] = $field->errors();
 			}
-			
 		}
 
 		return $errors;
@@ -71,18 +115,18 @@ class Form {
 	public function is_posted() { //@todo implement form id for to see submissions better
 		//Get the key for this form
 		$key = $this->s_key;
-		
+
 		$ALL_FIELDS = array_merge($_POST, $_FILES);
-		
-		foreach( array_keys($ALL_FIELDS) as $post_value) {
-			if(strpos($post_value, $key) !== false ) {
+
+		foreach (array_keys($ALL_FIELDS) as $post_value) {
+			if (strpos($post_value, $key) !== false) {
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
-	
+
 //	public function is_posted() { //@todo implement form id for to see submissions better
 //		if (!empty($_POST)) {
 //			return true;
@@ -109,8 +153,6 @@ class Form {
 
 
 		if ($data !== false) { // Setter function
-			
-
 			$fdata = [];
 			foreach ($this->flatten($data) as $key => $value) {
 				$key = explode('|', $key);
@@ -138,7 +180,7 @@ class Form {
 
 
 			if (count($parts) > 1) {
-				
+
 				$mdata = [];
 				$ref = &$data;
 				$i = 0;
@@ -150,7 +192,7 @@ class Form {
 					if ($key + 1 == count($parts)) { // last element
 						$ref[$part] = $field->value();
 					} else {
-						if( !isset( $ref[$part] ) ) {
+						if (!isset($ref[$part])) {
 							$ref[$part] = [];
 						}
 						$ref = &$data[$part];
@@ -225,7 +267,7 @@ class Form {
 		}
 		return true;
 	}
-	
+
 	function disable($name, $disable = true) {
 		foreach ($this->fields as $field) { /* @var $field Form\Field\Field */
 
