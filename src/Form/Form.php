@@ -40,7 +40,7 @@ class Form {
 
 		//Add button to form to show on display
 		if (empty($this->captcha_selector)) {
-			$this->c->append('<div class="g-recaptcha" data-sitekey="'
+			$this->c->filter('form')->first()->append('<div class="g-recaptcha" data-sitekey="'
 					. $site_key
 					. '"></div>');
 		} else {
