@@ -10,15 +10,16 @@ class Form {
 	private $types = [
 		'text', 'select', 'multifield', 'file', 'number', 'email', 'textarea', 'radio', 'checkbox', 'password', 'submit'
 	];
+	var $captcha_selector = '', $secret;
 
-	public function __construct( $form, $s_key = false) {
+	public function __construct($form, $s_key = false) {
 		$this->string = $form;
-		
-		
+
+
 		//Load html in html parser
 		$this->c = HtmlPageCrawler::create($this->string);
-		
-		if($s_key) {
+
+		if ($s_key) {
 			$this->s_key = $s_key;
 		} else {
 			$this->s_key = md5($this->c->saveHTML());
@@ -27,16 +28,50 @@ class Form {
 		// Look for all standerd inputs and special input divs
 		$this->assemble_fields();
 	}
-	
-	public function get_fields(){
+
+	/**
+	 * Adds google captcha to form with key
+	 * @param type $key
+	 */
+	function addRecaptcha($site_key, $secret_key) {
+
+		//Add script to form to load the source code for file
+		$result = $this->c->prepend("<script src='https://www.google.com/recaptcha/api.js'></script>");
+
+		//Add button to form to show on display
+		if (empty($this->captcha_selector)) {
+			$this->c->filter('form')->first()->append('<div class="g-recaptcha" data-sitekey="'
+					. $site_key
+					. '"></div>');
+		} else {
+			$this->c->filter($this->captcha_selector)->first()->append('<div class="g-recaptcha" data-sitekey="'
+					. $site_key
+					. '"></div>');
+		}
+		//Register in class so that it can be used to validate posts
+		$this->secret = $secret_key;
+	}
+
+	public function get_fields() {
 		$fields = [];
-		foreach($this->fields as $field) $fields[] = $field->name();
+		foreach ($this->fields as $field)
+			$fields[] = $field->name();
 		$fields = array_unique($fields);
 		return $fields;
 	}
 
 	public function validate() {
 		$valid = true;
+		if ($this->secret) { // Google Recaptcha activated. Check that post is legitmate
+			$captcha = $_POST['g-recaptcha-response'];
+			$response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=$this->secret&response=" . $captcha . "&remoteip=" . $_SERVER['REMOTE_ADDR']);
+			$obj = json_decode($response);
+			if ($obj->success == false) {
+				return false;
+			}
+		}
+		
+		
 		foreach ($this->fields as &$field) {
 			if ($valid & !$field->validate() || $field->errors() != []) {
 				$valid = false;
@@ -50,10 +85,9 @@ class Form {
 		$errors = [];
 		foreach ($this->fields as $field) {
 			$error = $field->errors();
-			if(!empty($error)) {
+			if (!empty($error)) {
 				$errors[$field->name()] = $field->errors();
 			}
-			
 		}
 
 		return $errors;
@@ -71,18 +105,19 @@ class Form {
 	public function is_posted() { //@todo implement form id for to see submissions better
 		//Get the key for this form
 		$key = $this->s_key;
-		
+
 		$ALL_FIELDS = array_merge($_POST, $_FILES);
-		
-		foreach( array_keys($ALL_FIELDS) as $post_value) {
-			if(strpos($post_value, $key) !== false ) {
+
+
+		foreach (array_keys($ALL_FIELDS) as $post_value) {
+			if (strpos($post_value, $key) !== false) {
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
-	
+
 //	public function is_posted() { //@todo implement form id for to see submissions better
 //		if (!empty($_POST)) {
 //			return true;
@@ -109,8 +144,6 @@ class Form {
 
 
 		if ($data !== false) { // Setter function
-			
-
 			$fdata = [];
 			foreach ($this->flatten($data) as $key => $value) {
 				$key = explode('|', $key);
@@ -138,7 +171,7 @@ class Form {
 
 
 			if (count($parts) > 1) {
-				
+
 				$mdata = [];
 				$ref = &$data;
 				$i = 0;
@@ -150,7 +183,7 @@ class Form {
 					if ($key + 1 == count($parts)) { // last element
 						$ref[$part] = $field->value();
 					} else {
-						if( !isset( $ref[$part] ) ) {
+						if (!isset($ref[$part])) {
 							$ref[$part] = [];
 						}
 						$ref = &$data[$part];
@@ -225,7 +258,7 @@ class Form {
 		}
 		return true;
 	}
-	
+
 	function disable($name, $disable = true) {
 		foreach ($this->fields as $field) { /* @var $field Form\Field\Field */
 
