@@ -33,7 +33,7 @@ class File extends Input {
 			$valid = false;
 		}
 		
-		if($valid && $this->node->attr('filetype')) { // Check if the filetype is matching the file
+		if(  $this->file->uploaded()  && $this->node->attr('filetype') ) { // Check if the filetype is matching the file
 			$types = explode(';', $this->node->attr('filetype'));
 			
 			if(!in_array($this->file->type, $types)) {

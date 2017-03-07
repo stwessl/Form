@@ -12,7 +12,7 @@ class Form {
 	];
 	var $captcha_selector = '', $secret;
 
-	public function __construct($form, $s_key = false) {
+	public function __construct($form, $s_key = false, $selector = false) {
 		$this->string = $form;
 
 
