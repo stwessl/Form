@@ -202,6 +202,35 @@ class Form {
 
 		return $data;
 	}
+	
+	/**
+	 * Removed unique id from fieldnames;
+	 * @param type $post
+	 */
+	function clean_post($post = false) {
+		if($post === false) {
+			$post = $_POST;
+		}
+		
+		foreach($post as $field => $value) {
+			if( is_numeric($field) || strpos($field, $this->s_key) !== false) {
+				$key = str_replace($this->s_key.'-', '', $field);
+				
+				if(is_array($value)) {
+					$post[$key] = $value;
+				} else {
+					$post[$key] = $value; 
+				}
+				
+				
+				unset($post[$field]);
+			}
+			
+			
+		}
+		
+		return $post;
+	}
 
 	public function set_data($data) {
 		return $this->data($data);
